@@ -4,6 +4,10 @@ import pyodbc
 
 app = Flask(__name__)
 
+@app.route('/hello')
+def hello():
+    return "Hello."
+
 @app.route('/incidents/report', methods = ['POST'])
 def report_incident():
     json = request.json
