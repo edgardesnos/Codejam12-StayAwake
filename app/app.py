@@ -54,6 +54,7 @@ def insert(statement):
     connection = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
     cursor = connection.cursor() # the actual object we use to query
     cursor.execute(statement)
+    connection.commit()
     connection.close()
 
 if __name__ == '__main__':
