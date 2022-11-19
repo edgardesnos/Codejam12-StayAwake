@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import request
 import pyodbc
 
 app = Flask(__name__)
@@ -15,13 +16,19 @@ def poop():
 
 # @app.route('/login', methods = ['POST'])
 @app.route('/login/<username>/<password>')
-def confirm_login():
-    username = request.args['username']
-    password = request.args['password']
+def confirm_login(username, password):
+    # username = request.args.get('username')
+    # password = request.args.get('password')
 
     # check if the username and password combination is valid in the db
-    results = select_query("SELECT * from Users where username = '" + username + " AND password = '" + password + "'")
-    print(results)
+    print("SELECT * from Users where uname = '" + username + "' AND pass = '" + password + "'")
+    results = select_query("SELECT * from Users where uname = '" + username + "' AND pass = '" + password + "'")
+    # if 1 row returned, then we logged in successfully
+    count = len(results)
+    if (count >= 1):
+        return "Successful Login!"
+    else:
+        return "Login failed."
 
 def select_query(query):
     server = 'codejam12-sql-server.database.windows.net'
@@ -33,9 +40,6 @@ def select_query(query):
     cursor.execute(query)
     # return all records
     return cursor.fetchall()
-
-    
-    connection.close()
 
 if __name__ == '__main__':
 
