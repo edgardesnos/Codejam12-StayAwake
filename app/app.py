@@ -109,5 +109,5 @@ def getDataFrameAllDrowsinessRecords():
 
 if __name__ == "__main__":
     # defining server ip address and port
-    # print_all_drowsy_records()
     app.run(host="127.0.0.1",port="5001", debug=True)
+    print_all_drowsy_records()
