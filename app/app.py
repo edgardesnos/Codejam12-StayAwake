@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 import pyodbc
 #from webservices import app_webservices
@@ -29,13 +29,16 @@ def hello():
 @app.route('/incidents/report', methods = ['POST'])
 def report_incident():
     json = request.json
-    x = json['x']
-    y = json['y']
-    address = json['address'] # probably should look up the address using coordinates instead of passing it here
+    latitude = json['latitude']
+    longitude = json['longitude']
     time = json['time']
 
     # create a new incident report in the database
-    insert_statement = "INSERT INTO Drowsiness_Report(gps_x_cord, gps_y_cord, time, incident_address) VALUES (" + x + ", " + y + ", '" +  time + "' , '" + address + "')"
+    print(latitude)
+    print(longitude)
+    print(time)
+    print(str(latitude))
+    insert_statement = "INSERT INTO Drowsiness_Report(latitude, longitude, time) VALUES (" + str(latitude) + ", " + str(longitude) + ", '" +  str(time) + "')"
     insert(insert_statement)
     return "Inserted into database" # TODO: error checking? this return value is not helpful
 
@@ -82,4 +85,4 @@ def insert(statement):
 
 if __name__ == "__main__":
     # defining server ip address and port
-    app.run(host="0.0.0.0",port="5000", debug=True)
+    app.run(host="127.0.0.1",port="5001", debug=True)
