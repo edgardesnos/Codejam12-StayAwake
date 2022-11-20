@@ -96,6 +96,7 @@ def insert(statement):
     connection.commit()
     connection.close()
 
+@app.route('/incidents/all')
 def getDataFrameAllDrowsinessRecords():
     server = 'codejam12-sql-server.database.windows.net'
     database = 'codejam'
@@ -103,11 +104,13 @@ def getDataFrameAllDrowsinessRecords():
     password = 'FuozZy4DK'
     connection = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
     querytxt = "SELECT * FROM Drowsiness_Report"
-    return pd.read_sql(querytxt, connection)
+    data = pd.read_sql(querytxt, connection)
+    return render_template('dataDisplay.html', tables=[data.to_html(classes='data')], titles=data.columns.values)
+
 
 
 
 if __name__ == "__main__":
     # defining server ip address and port
-    print_all_drowsy_records()
+    # print_all_drowsy_records()
     app.run(host="127.0.0.1",port="5001", debug=True)
