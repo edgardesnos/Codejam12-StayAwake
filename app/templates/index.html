@@ -4,9 +4,15 @@
     <title>Drowsiness Prevention System</title>
   </head>
   <body>
+   <script src="../static/test3.js"></script>
+   <h3> Your Location: <span id="latitude"></span>, <span id="longitude"></span> 
+    Address: <span id="address">{{address}}</span>
+   </h3>
+  <button onclick="server.get_address()">Update Address</button>
     <div id="webcam_feed_div">
       <h1>Webcam Video Feed</h1>
       <img id="webcam_feed" src="{{ url_for('video_feed') }}">
     </div>
+
   </body>
 </html>

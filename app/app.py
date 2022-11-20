@@ -1,12 +1,43 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
-
+import jyserver.Flask as jsf
+import requests, json, geocoder
 app = Flask(__name__)
 
-@app.route("/")
+
+@jsf.use(app) # Connect Flask object to JyServer; used to get location
+class App:
+    coordinates = []
+    def __init__(self):
+        self.coordinates = [0, 0]
+
+    def get_address(self):
+        lat = self.js.document.getElementById("latitude").innerHTML
+        long = self.js.document.getElementById("longitude").innerHTML
+        return [lat, long]
+        #self.coordinates = [lat, long]
+@app.route("/") # base URL (home page, first time being run)
 def index():
+    return App.render(render_template("index.html", address="loading..."))
+
+@app.route("/home") #  (home page after address loads)
+def home():
+    g = geocoder.ip('me')
+    coords = g.latlng
+    lat = coords[0]
+    long = coords[1]
+    url = f"https://dev.virtualearth.net/REST/v1/LocationRecog/{lat},{long}?&top=1&includeEntityTypes=address&key=As121dM81pVFCIUxLtVB3xYQ-ps7x7jCP7PlEFfvI4RM87V4OUkHV4h3lEpDGeUW"
+    response = requests.get(url)
+    data = response.json() 
+    addr = data["resourceSets"][0]["resources"][0]["addressOfLocation"][0]["formattedAddress"]
     # rendering webpage
-    return render_template("index.html")
+    return App.render(render_template("index.html", address=addr))
+
+# def get_address(): 
+#     #coordinates = App.get_coords()
+#     #url = f"https://dev.virtualearth.net/REST/v1/LocationRecog/{coordinates[0]},{coordinates[1]}?&top=1&includeEntityTypes=address&key=As121dM81pVFCIUxLtVB3xYQ-ps7x7jCP7PlEFfvI4RM87V4OUkHV4h3lEpDGeUW"
+
+
 
 def gen(camera):
     while True:
