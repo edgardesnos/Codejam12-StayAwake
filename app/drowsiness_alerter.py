@@ -1,11 +1,13 @@
 import pyttsx3
-from multiprocessing import Process
 import threading
 from playsound import playsound
+from pathlib import Path
 
-not_rick_roll_path = "C:\\Users\\edgar\\Desktop\\CodeJam12\\Codejam12-StayAwake\\app\\alrt_sound.mp3"
-beep_sound_path = "C:\\Users\\edgar\\Desktop\\CodeJam12\\Codejam12-StayAwake\\app\\beep.mp3"
-tts_message = "You seem tired, you should get some rest."
+SOUNDS_PATH = str(Path.cwd())[:-3] + "sounds\\"
+
+NOT_RICK_ROLL_PATH = SOUNDS_PATH + "alrt_sound.mp3"
+BEEP_SOUND_PATH = SOUNDS_PATH + "beep.mp3"
+TTS_MESSAGE = "You seem tired, you should get some rest."
 
 
 engine = pyttsx3.init()
@@ -24,25 +26,25 @@ class DrowsinessAlerter:
         #   0 -> Text to speech asks to wake up
         #   1 -> Beep sound
         #   2 -> Definitely not a Rick Roll
-        self.alert_type = 0
+        self.alert_type = 1
 
     def should_alert(self, is_drowsy):
         if is_drowsy:
             self.drowsiness_counter += 1
         else:
             self.drowsiness_counter = 0
-        if self.drowsiness_counter > 30:
+        if self.drowsiness_counter > 20:
             self.alert_driver()
             self.drowsiness_counter = 0
 
     def alert_driver(self):
         if self.alert_type == 0:
-            self.tts_thread = threading.Thread(target=play_text_to_speech_message, args=(tts_message,))
+            self.tts_thread = threading.Thread(target=play_text_to_speech_message, args=(TTS_MESSAGE,))
             self.tts_thread.start()
         elif self.alert_type == 1:
-            self.start_playsound_thread(beep_sound_path)
+            self.start_playsound_thread(BEEP_SOUND_PATH)
         elif self.alert_type == 2:
-            self.start_playsound_thread(not_rick_roll_path)
+            self.start_playsound_thread(NOT_RICK_ROLL_PATH)
 
     def start_playsound_thread(self, path):
         self.thread = threading.Thread(target=playsound, args=(path,))

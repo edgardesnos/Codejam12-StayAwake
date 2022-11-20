@@ -1,11 +1,9 @@
 import cv2
-from face_detector import FaceDetector
 from face_mesh import FaceMeshDetector
 from drowsiness_alerter import DrowsinessAlerter
 
 class VideoCamera(object):
     def __init__(self):
-        self.face_detector = FaceDetector()
         self.face_mesh_detector = FaceMeshDetector()
         self.drowsiness_alerter = DrowsinessAlerter()
 
