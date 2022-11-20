@@ -107,9 +107,6 @@ def getDataFrameAllDrowsinessRecords():
     data = pd.read_sql(querytxt, connection)
     return render_template('dataDisplay.html', tables=[data.to_html(classes='data')], titles=data.columns.values)
 
-
-
-
 if __name__ == "__main__":
     # defining server ip address and port
     # print_all_drowsy_records()
