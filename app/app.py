@@ -50,9 +50,14 @@ def confirm_login(username, password):
     # if 1 row returned, then we logged in successfully
     count = len(results)
     if (count == 1): # username is unique in db, so not going to be more than 1
-        return "success"
+        response = "success"
+        # return "success"
     else:
-        return "fail"
+        response = "fail"
+        # return "fail"
+
+    response.mimetype = "text/plain"
+    return response    
 
 def select_query(query):
     server = 'codejam12-sql-server.database.windows.net'
@@ -82,4 +87,5 @@ def insert(statement):
 
 if __name__ == "__main__":
     # defining server ip address and port
-    app.run(host="0.0.0.0",port="5000", debug=True)
+    # app.run(host="0.0.0.0",port="5000", debug=True)
+    app.run()
