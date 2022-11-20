@@ -11,15 +11,30 @@
       console.log("Starting the method invocation.");
         // attempt to log into the server
         let uname = document.getElementById("username").value;
-        let passwrd = document.getElementByid("password").value;
-        let url = "http://localhost:5000/login/" + uname + "/" + passwrd;
+        let passwrd = document.getElementById("password").value;
+        let url = "http://127.0.0.1:5000/login/" + uname + "/" + passwrd;
         // send http request with de credentials
         req = new XMLHttpRequest();
         req.open("GET", url, true);
         // send the request
-        req.send(null); // I think this is just null body
-        let response = request.responseText;
-        console.log(response);
+        req.send(); // I think this is just null body
+        // let response = request.responseText;
+        console.log(req.responseText);
+        // text = req.responseText.innerHTML;
+        // if the login is successful, then show the next page
+        if (text.localeCompare("success") === 0)
+        {
+          // successfully logged in, move on to the next page
+          // will test by just putting in values to the boxes
+          document.getElementById("username").value = "successful.";
+          document.getElementById("password").value = "good.";
+
+        }
+        else // failed login. clear text boxes and go again.
+        {
+          
+        }
+        // else clear the text boxes and 
     }
 </script>
 
@@ -30,7 +45,7 @@
         <div class="form">
           <form class="login-form">
             <input type="text" id="username" placeholder="username"/>
-            <input type="password" id="password" placeholder="password"/>
+            <input type="text" id="password" placeholder="password"/>
             <button onclick= "validateLogin();">login</button>
 
             <p class="message">Not registered? <a href="signup.html">Create an account</a></p>
