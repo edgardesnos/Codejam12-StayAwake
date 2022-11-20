@@ -35,10 +35,6 @@ def report_incident():
     time = json['time']
 
     # create a new incident report in the database
-    print(latitude)
-    print(longitude)
-    print(time)
-    print(str(latitude))
     insert_statement = "INSERT INTO Drowsiness_Report(latitude, longitude, time) VALUES (" + str(latitude) + ", " + str(longitude) + ", '" +  str(time) + "')"
     insert(insert_statement)
     return "Inserted into database" # TODO: error checking? this return value is not helpful
@@ -49,7 +45,7 @@ def report_incident():
 def confirm_login(username, password):
 
     # check if the username and password combination is valid in the db
-    print("SELECT * from Users where uname = '" + username + "' AND pass = '" + password + "'")
+    #print("SELECT * from Users where uname = '" + username + "' AND pass = '" + password + "'")
     results = select_query("SELECT * from Users where uname = '" + username + "' AND pass = '" + password + "'")
     # if 1 row returned, then we logged in successfully
     count = len(results)
@@ -68,7 +64,7 @@ def print_all_drowsy_records():
     #     print("Time: ", row[2])
     #     print("\n")
     data = getDataFrameAllDrowsinessRecords()
-    print(data)
+    #print(data)
 
 
 def select_query(query):

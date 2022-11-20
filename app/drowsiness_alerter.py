@@ -36,6 +36,8 @@ class DrowsinessAlerter:
         if self.drowsiness_counter > 20:
             self.alert_driver()
             self.drowsiness_counter = 0
+            return True
+        return False 
 
     def alert_driver(self):
         if self.alert_type == 0:
