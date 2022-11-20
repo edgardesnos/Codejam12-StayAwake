@@ -1,17 +1,17 @@
 import cv2
-from face_detector import FaceDetector
 from face_mesh import FaceMeshDetector
 import geocoder
 import requests
 import time
+from drowsiness_alerter import DrowsinessAlerter
 
 class VideoCamera(object):
     def __init__(self):
-        self.face_detector = FaceDetector()
         self.face_mesh_detector = FaceMeshDetector()
+        self.drowsiness_alerter = DrowsinessAlerter()
 
         # Find the first available working webcam
-        camera_feed_val = 0
+        camera_feed_val = 2
         while camera_feed_val < 5:
             self.video = cv2.VideoCapture(camera_feed_val)
             try:
@@ -57,13 +57,9 @@ class VideoCamera(object):
 
     def get_frame(self):
         ret, frame = self.video.read()
-        #frame = self.face_detector.detect_face(frame)
-        frame = self.face_mesh_detector.detect_mesh(frame)
-        # is drowsy?
-            # play sound
-            # get data
-            # save to db
         # self.report_drowsy()
+        frame, is_drowsy = self.face_mesh_detector.detect_mesh(frame)
+        self.drowsiness_alerter.should_alert(is_drowsy)
         ret, jpeg = cv2.imencode(".jpg", frame)
         return jpeg.tobytes()
 
