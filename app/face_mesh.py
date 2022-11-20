@@ -1,5 +1,6 @@
 import mediapipe as mp
 import cv2
+from scipy.spatial import dist
 
 class FaceMeshDetector:
 
@@ -21,8 +22,8 @@ class FaceMeshDetector:
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
-                test_list = [(d.x, d.y, d.z) for d in face_landmarks.landmark]
-                #test_list.append(face_landmarks)
+                landmark_coords = [(d.x, d.y, d.z) for d in face_landmarks.landmark]
+
                 self.mp_drawing.draw_landmarks(
                     image=image,
                     landmark_list=face_landmarks,
@@ -39,21 +40,38 @@ class FaceMeshDetector:
                     connection_drawing_spec=self.mp_drawing_styles
                     .get_default_face_mesh_contours_style()
                 )
-                self.mp_drawing.draw_landmarks(
-                    image=image,
-                    landmark_list=face_landmarks,
-                    connections=self.mp_face_mesh.FACEMESH_IRISES,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=self.mp_drawing_styles
-                    .get_default_face_mesh_iris_connections_style()
-                )
+                # self.mp_drawing.draw_landmarks(
+                #     image=image,
+                #     landmark_list=face_landmarks,
+                #     connections=self.mp_face_mesh.FACEMESH_IRISES,
+                #     landmark_drawing_spec=None,
+                #     connection_drawing_spec=self.mp_drawing_styles
+                #     .get_default_face_mesh_iris_connections_style()
+                # )
             y_size, x_size, _ = image.shape
-            image = cv2.line(image, (int(test_list[33][0]*x_size), int(test_list[33][1]*y_size)), (int(test_list[133][0]*x_size), int(test_list[133][1]*y_size)), (255, 0, 0))
-            image = cv2.line(image, (int(test_list[160][0]*x_size), int(test_list[160][1]*y_size)), (int(test_list[144][0]*x_size), int(test_list[144][1]*y_size)), (255, 0, 0))
-            image = cv2.line(image, (int(test_list[158][0]*x_size), int(test_list[158][1]*y_size)), (int(test_list[153][0]*x_size), int(test_list[153][1]*y_size)), (255, 0, 0))
-            image = cv2.line(image, (int(test_list[362][0]*x_size), int(test_list[362][1]*y_size)), (int(test_list[263][0]*x_size), int(test_list[263][1]*y_size)), (255, 0, 0))
-            image = cv2.line(image, (int(test_list[385][0]*x_size), int(test_list[385][1]*y_size)), (int(test_list[380][0]*x_size), int(test_list[380][1]*y_size)), (255, 0, 0))
-            image = cv2.line(image, (int(test_list[387][0]*x_size), int(test_list[387][1]*y_size)), (int(test_list[373][0]*x_size), int(test_list[373][1]*y_size)), (255, 0, 0))
+
+            l_eye_coords = [33,133,160,144,158,153] #width, height1, height2
+            
+            r_eye_coords = [362,263,385,380,387,373]
+
+            image = cv2.line(image, (int(landmark_coords[33][0]*x_size), int(landmark_coords[33][1]*y_size)), (int(landmark_coords[133][0]*x_size), int(landmark_coords[133][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(landmark_coords[160][0]*x_size), int(landmark_coords[160][1]*y_size)), (int(landmark_coords[144][0]*x_size), int(landmark_coords[144][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(landmark_coords[158][0]*x_size), int(landmark_coords[158][1]*y_size)), (int(landmark_coords[153][0]*x_size), int(landmark_coords[153][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(landmark_coords[362][0]*x_size), int(landmark_coords[362][1]*y_size)), (int(landmark_coords[263][0]*x_size), int(landmark_coords[263][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(landmark_coords[385][0]*x_size), int(landmark_coords[385][1]*y_size)), (int(landmark_coords[380][0]*x_size), int(landmark_coords[380][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(landmark_coords[387][0]*x_size), int(landmark_coords[387][1]*y_size)), (int(landmark_coords[373][0]*x_size), int(landmark_coords[373][1]*y_size)), (255, 0, 0))
         
-        return image
+        return image,l_eye_coords,r_eye_coords
+
+    def EAR(eye):
+        # vertical
+        A = dist.euclidean(eye[2], eye[3])
+        B = dist.euclidean(eye[4], eye[5])
+        # horizontal
+        C = dist.euclidean(eye[0], eye[1])
+        # compute the eye aspect ratio
+        ear = (A + B) / (2.0 * C)
+        # return the eye aspect ratio
+        return ear
+
 
