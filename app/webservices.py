@@ -61,7 +61,7 @@ def insert(statement):
     connection.commit()
     connection.close()
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    # app.run(port="8080")
-    app.run()
+#     # app.run(port="8080")
+#     app.run()
