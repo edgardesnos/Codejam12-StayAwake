@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     # rendering webpage
-    return render_template("index.html")
+    return render_template("p_index.html")
 
 def gen(camera):
     while True:
