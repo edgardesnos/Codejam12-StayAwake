@@ -10,7 +10,7 @@ class VideoCamera(object):
         self.drowsiness_alerter = DrowsinessAlerter()
 
         # Find the first available working webcam
-        camera_feed_val = 0
+        camera_feed_val = 2
         while camera_feed_val < 5:
             self.video = cv2.VideoCapture(camera_feed_val)
             try:
