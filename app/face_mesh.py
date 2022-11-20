@@ -21,6 +21,8 @@ class FaceMeshDetector:
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
+                test_list = [(d.x, d.y, d.z) for d in face_landmarks.landmark]
+                #test_list.append(face_landmarks)
                 self.mp_drawing.draw_landmarks(
                     image=image,
                     landmark_list=face_landmarks,
@@ -45,6 +47,13 @@ class FaceMeshDetector:
                     connection_drawing_spec=self.mp_drawing_styles
                     .get_default_face_mesh_iris_connections_style()
                 )
+            y_size, x_size, _ = image.shape
+            image = cv2.line(image, (int(test_list[33][0]*x_size), int(test_list[33][1]*y_size)), (int(test_list[133][0]*x_size), int(test_list[133][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(test_list[160][0]*x_size), int(test_list[160][1]*y_size)), (int(test_list[144][0]*x_size), int(test_list[144][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(test_list[158][0]*x_size), int(test_list[158][1]*y_size)), (int(test_list[153][0]*x_size), int(test_list[153][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(test_list[362][0]*x_size), int(test_list[362][1]*y_size)), (int(test_list[263][0]*x_size), int(test_list[263][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(test_list[385][0]*x_size), int(test_list[385][1]*y_size)), (int(test_list[380][0]*x_size), int(test_list[380][1]*y_size)), (255, 0, 0))
+            image = cv2.line(image, (int(test_list[387][0]*x_size), int(test_list[387][1]*y_size)), (int(test_list[373][0]*x_size), int(test_list[373][1]*y_size)), (255, 0, 0))
         
         return image
 
