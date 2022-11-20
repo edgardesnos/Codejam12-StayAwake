@@ -3,7 +3,7 @@ import threading
 from playsound import playsound
 from pathlib import Path
 
-SOUNDS_PATH = str(Path.cwd())[:-3] + "sounds\\"
+SOUNDS_PATH = str(Path.cwd())[:-3] + "sounds/"
 
 NOT_RICK_ROLL_PATH = SOUNDS_PATH + "alrt_sound.mp3"
 BEEP_SOUND_PATH = SOUNDS_PATH + "beep.mp3"
