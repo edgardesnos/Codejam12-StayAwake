@@ -1,6 +1,7 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 import pyodbc
+import pandas as pd
 #from webservices import app_webservices
 
 app = Flask(__name__)
@@ -29,13 +30,16 @@ def hello():
 @app.route('/incidents/report', methods = ['POST'])
 def report_incident():
     json = request.json
-    x = json['x']
-    y = json['y']
-    address = json['address'] # probably should look up the address using coordinates instead of passing it here
+    latitude = json['latitude']
+    longitude = json['longitude']
     time = json['time']
 
     # create a new incident report in the database
-    insert_statement = "INSERT INTO Drowsiness_Report(gps_x_cord, gps_y_cord, time, incident_address) VALUES (" + x + ", " + y + ", '" +  time + "' , '" + address + "')"
+    print(latitude)
+    print(longitude)
+    print(time)
+    print(str(latitude))
+    insert_statement = "INSERT INTO Drowsiness_Report(latitude, longitude, time) VALUES (" + str(latitude) + ", " + str(longitude) + ", '" +  str(time) + "')"
     insert(insert_statement)
     return "Inserted into database" # TODO: error checking? this return value is not helpful
 
@@ -53,6 +57,19 @@ def confirm_login(username, password):
         return "success"
     else:
         return "fail"
+
+def print_all_drowsy_records():
+    querytxt = "SELECT * FROM Drowsiness_Report"
+    # results = select_query(querytxt)
+    # for row in results:
+    #     print("Record id: ", row[3])
+    #     print("Latitude: ", row[0])
+    #     print("Longitude: ", row[1])
+    #     print("Time: ", row[2])
+    #     print("\n")
+    data = getDataFrameAllDrowsinessRecords()
+    print(data)
+
 
 def select_query(query):
     server = 'codejam12-sql-server.database.windows.net'
@@ -79,7 +96,18 @@ def insert(statement):
     connection.commit()
     connection.close()
 
+@app.route('/incidents/all')
+def getDataFrameAllDrowsinessRecords():
+    server = 'codejam12-sql-server.database.windows.net'
+    database = 'codejam'
+    username = 'nick'
+    password = 'FuozZy4DK'
+    connection = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
+    querytxt = "SELECT * FROM Drowsiness_Report"
+    data = pd.read_sql(querytxt, connection)
+    return render_template('dataDisplay.html', tables=[data.to_html(classes='data')], titles=data.columns.values)
 
 if __name__ == "__main__":
     # defining server ip address and port
-    app.run(host="0.0.0.0",port="5000", debug=True)
+    # print_all_drowsy_records()
+    app.run(host="127.0.0.1",port="5001", debug=True)
