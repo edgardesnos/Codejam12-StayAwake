@@ -16,9 +16,11 @@
         // send http request with de credentials
         req = new XMLHttpRequest();
         req.open("GET", url, true);
+        req.responseType = "text/plain";
         // send the request
         req.send(); // I think this is just null body
-        // let response = request.responseText;
+        let text = req.response.toString();
+        // let text = req.responseText;
         console.log(req.responseText);
         // text = req.responseText.innerHTML;
         // if the login is successful, then show the next page
