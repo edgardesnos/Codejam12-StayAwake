@@ -66,4 +66,6 @@ class VideoCamera(object):
         # self.report_drowsy()
         ret, jpeg = cv2.imencode(".jpg", frame)
         return jpeg.tobytes()
+
+
         

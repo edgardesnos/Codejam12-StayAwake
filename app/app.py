@@ -57,6 +57,16 @@ def confirm_login(username, password):
     else:
         return "fail"
 
+def print_all_drowsy_records():
+    querytxt = "SELECT * FROM Drowsiness_Report"
+    results = select_query(querytxt)
+    for row in results:
+        print("Record id: ", row[3])
+        print("Latitude: ", row[0])
+        print("Longitude: ", row[1])
+        print("Time: ", row[2])
+        print("\n")
+
 def select_query(query):
     server = 'codejam12-sql-server.database.windows.net'
     database = 'codejam'
@@ -85,4 +95,5 @@ def insert(statement):
 
 if __name__ == "__main__":
     # defining server ip address and port
+    print_all_drowsy_records()
     app.run(host="127.0.0.1",port="5001", debug=True)
