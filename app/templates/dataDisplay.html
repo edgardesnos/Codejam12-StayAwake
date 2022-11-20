@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <title>Drowsiness records</title>
+</head>
+<body>
+
+{% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+{% endfor %}
+</body>
+</html>
