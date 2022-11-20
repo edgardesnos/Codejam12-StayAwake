@@ -28,12 +28,14 @@
 </script>
   <head>
     <title>Drowsiness Prevention System</title>
+    <link rel="stylesheet" href="../static/style.css">
   </head>
   <body id="body">
+    <h1>Drowsiness Prevention System</h1>
     <div id="webcam_feed_div">
-      <h1>Webcam Video Feed</h1>
+      <h2>Webcam Video Feed</h2>
       <img id="webcam_feed" src="{{ url_for('video_feed') }}">
+      <button type ="button" id="showDataButton" onClick=showAllData() >Show drowsiness data</button>
     </div>
-    <button type ="button" id="showDataButton" onClick=showAllData() >Show drowsiness data</button>
   </body>
 </html>
