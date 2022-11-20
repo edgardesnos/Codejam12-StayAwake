@@ -63,7 +63,7 @@ class VideoCamera(object):
             # play sound
             # get data
             # save to db
-        self.report_drowsy()
+        # self.report_drowsy()
         ret, jpeg = cv2.imencode(".jpg", frame)
         return jpeg.tobytes()
         
