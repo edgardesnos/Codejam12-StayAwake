@@ -4,7 +4,7 @@ from face_mesh import FaceMeshDetector
 
 class VideoCamera(object):
     def __init__(self):
-       self.video = cv2.VideoCapture(2)
+       self.video = cv2.VideoCapture(0)
        self.face_detector = FaceDetector()
        self.face_mesh_detector = FaceMeshDetector()
     
