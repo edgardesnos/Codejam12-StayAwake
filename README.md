@@ -1,5 +1,7 @@
 # Codejam12-StayAwake
 
+# First place overall at McGill EUS Codejam 12!!
+
 ## Necessary Downloads and Imports
 - flask
 - pandas
